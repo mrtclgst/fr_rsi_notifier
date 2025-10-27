@@ -83,15 +83,16 @@ async def check_symbols(app):
                 continue
 
             rsi_text = "\n".join([f"{k} RSI: {v:.2f}" for k, v in rsi_dict.items()])
-            text = f"💹 {s}\nFunding: {fr:.4f}%\nNext Funding: {ft}\n{rsi_text}"
-
+            #text = f"💹 {s}\nFunding: {fr:.4f}%\nNext Funding: {ft}\n{rsi_text}"
+            text=f"";
             # Sinyal: tüm RSI’lar 70 üzerindeyse ve funding rate eşik üstünde
             if fr > FUNDING_THRESHOLD and all(v > 70 for v in rsi_dict.values()):
                 text += "\n⚠️ AŞIRI LONG yönlü baskı!"
+                print(text)
             elif fr < -FUNDING_THRESHOLD and all(v < 30 for v in rsi_dict.values()):
                 text += "\n⚠️ AŞIRI SHORT yönlü baskı!"
+                print(text);
 
-            print(text)
             await app.bot.send_message(chat_id=CHAT_ID, text=text)
 
 # Ana fonksiyon
@@ -112,6 +113,7 @@ async def main():
     else:
         while True:
             await check_symbols(app)
+            print("calisti");
             await asyncio.sleep(CHECK_INTERVAL)
 
 # Çalıştır
